@@ -1,9 +1,34 @@
-import type { NextPage } from 'next'
+import type {InferGetStaticPropsType, NextPage} from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import useFirebase from "../hooks/useFirebase";
 
-const Home: NextPage = () => {
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const firebaseConfig = {
+    apiKey: process.env.FB_API_KEY,
+    authDomain: process.env.FB_AUTH_DOMAIN,
+    projectId: process.env.FB_PROJECT_ID,
+    storageBucket: process.env.FB_STORAGE_BUCKET,
+    messagingSenderId: process.env.FB_MESSAGING_SENDER_ID,
+    appId: process.env.FB_APP_ID
+  };
+
+  return {
+    props: {
+      firebaseConfig
+    }
+  };
+}
+
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ firebaseConfig }) => {
+  const app = useFirebase();
+
+  console.log(app);
+  console.log(firebaseConfig);
+
   return (
     <div className={styles.container}>
       <Head>
