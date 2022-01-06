@@ -1,8 +1,8 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 // import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 // import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
-export const firebaseConfig = {
+const firebaseConfig = {
     apiKey: process.env.FB_API_KEY,
     authDomain: process.env.FB_AUTH_DOMAIN,
     projectId: process.env.FB_PROJECT_ID,
@@ -11,4 +11,9 @@ export const firebaseConfig = {
     appId: process.env.FB_APP_ID
 };
 
-export const app = initializeApp(firebaseConfig);
+export const initFirebase = () => {
+    if (!getApps().length) {
+        return initializeApp(firebaseConfig);
+    }
+    return getApp();
+}
